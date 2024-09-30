@@ -1,0 +1,104 @@
+<div class="main">
+    <aside>
+        <div class="search-main">
+            <div class="search">
+            <input  style="outline: none;" type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()"  placeholder="Search Event...."/>
+            <i class="fa-solid fa-magnifying-glass" (click)="onSearch()"></i>
+            </div>
+        </div>
+        <div class="all-sport">
+            <div class="sport-header">  
+                <p>All Games</p>
+                <p>2328</p>
+            </div>
+            <div *ngFor="let data of sportData" class="sport" (click)="setData(data)">
+                <div class="sport-i">
+                    <i [attr.sport]="data.KeyName.toLowerCase()" class='sport-icon'></i>
+                <p>{{data.KeyName}}</p>
+                </div>
+                <div class="quant">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+        <ul class="reg-drop">
+            <li *ngFor="let option of activeRegions;let i = index" (click)="setChamps(option,i)" class="regions">
+                <div class="reg">
+                    <span [attr.country]='option.KeyName.toLowerCase()' class='flag'></span>
+                    {{ option.KeyName }}
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </div>
+                <ul *ngIf="isDropdownOpen && i==activeChampsIndex" class="dropdown">
+                    <li style="height: 36px; padding-left: 30px;" *ngFor="let champ of activeChamps" (click)="setMatches(champ)">{{champ.KeyName}} <input type="checkbox">
+                        <span class="checkmark"></span></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+    <main>
+        <div class="game-date">
+            <p style="font-size: 14px;">Date</p>
+            <div class="result">
+                <p>Match Result</p>
+                <div class="result-child">
+                    <p>1</p>
+                    <p>X</p>
+                    <p>2</p>
+                </div>
+            </div>
+            <div class="chance">
+                <p>Double Chance</p>
+                <div class="chance-child">
+                    <p>1</p>
+                    <p>X</p>
+                    <p>2</p>
+                </div>
+            </div>
+            <div class="goals">
+                <p>Total Goals</p>
+                <div class="goals-child">
+                    <p>Over</p>
+                    <p>Under</p>
+                </div>
+            </div>
+            <div class="score">
+                <p>Both Team To Score</p>
+                <div class="score-child">
+                    <p>Yes</p>
+                    <p>No</p>
+                </div>
+            </div>
+            <p style="font-size: 16px;">+</p>
+        </div>
+        <div class="sport-name">
+            <i [attr.sport]="activeSportName.toLowerCase()" class='sport-icon' style="color: white;"></i>
+            <p>{{activeSportName}}</p>
+        </div>
+        <div class="games">
+            <div  *ngFor="let match of activeMatches" class="game">
+                <p class="time">{{match.StartTime}}</p>
+                <p>
+                    {{getTeamById(match.t1)?.Name}}
+                    - {{getTeamById(match.t2)?.Name}}
+                </p>
+            </div>
+            <div *ngFor="let match of filteredGames" class="game">
+                <p class="time">{{match.StartTime}}</p>
+                <p>
+                    {{getTeamById(match.t1)?.Name}}
+                    - {{getTeamById(match.t2)?.Name}}
+                </p>
+            </div>
+        </div>
+    </main>
+    <div class="right-box col-3">
+        <div class="box-header">
+            <p style="font-size: 18px;font-weight: 400;">Single</p>
+            <p style="font-size: 15px;color: #545a5f;font-weight: 400;">MULTIPLE</p>
+            <p style="font-size: 15px;color: #545a5f;font-weight: 400;">SISTEM</p>
+            <i class="fa-solid fa-trash-can" (click)="remove()"></i>
+        </div>
+    </div>
+</div>  
+

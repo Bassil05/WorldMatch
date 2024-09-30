@@ -1,0 +1,228 @@
+
+.main{
+    font-family: 'Roboto-Regular';
+    display: flex;
+    background-color: #262930;
+    padding-top: 46px;
+    padding-left: 19px;
+}
+aside{
+    width: 20%;
+}
+main{
+    width: 60%;
+    padding: 0 15px;
+}
+.right-box{
+    width: 20%;
+}
+.search-main{
+    height: 59px;
+    background-color: #2e3740;    
+}
+.search{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+input{
+    background-color: #2e3740;
+    border: none;
+    color: white;
+}
+.fa-magnifying-glass{
+    color: #FD3F2F;
+}
+.all-sport{
+    margin-top: 20px;
+    background-color: #2e3740;
+}
+.sport-header{
+    height: 50px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-bottom: #FD3F2F 1px solid;
+    margin-bottom: 10px;
+}
+.sport{
+    height: 40px;
+}
+.sport-i{
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.fa-futbol{
+    color: #FD3F2F;
+    font-size: x-large;
+}
+p{
+    color: white;
+}
+.game-date{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    min-height: 60px;
+    background-color: #2e3740;
+    border-bottom: 2px solid #FD3F2F;
+}
+.game-date p {
+    display: flex;
+    align-items: center;
+}
+.result{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.result p{
+    font-size: 12px;
+}
+.result-child{
+    display: flex;
+    justify-content: space-between;
+}
+.result-child p{
+    font-size: 14px;
+    color: #979BA0;
+}
+.chance{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.chance p{
+    font-size: 12px;
+}
+.chance-child{
+    display: flex;
+    justify-content: space-between;
+}
+.chance-child p{
+    font-size: 14px;
+    color: #979BA0;
+}
+.goals{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.goals p{
+    font-size: 12px;
+}
+.goals-child{
+    display: flex;
+    justify-content: space-between;
+}
+.goals-child p{
+    color: #979BA0;
+    font-size: 14px;
+}
+.score{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.score p{
+    font-size: 12px;
+}
+.score-child {
+    display: flex;
+    justify-content: space-evenly;
+}
+.score-child p{
+    color: #979BA0;
+    font-size: 14px;
+}
+.sport-icon{
+    color: #FD3F2F;
+}
+.sport-name{
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 30px;
+    gap: 10px;
+    background-image: linear-gradient(-90deg, #1a1c21 0%, #262930 50%, #ff412f 100%);
+}
+.games{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #2e3740;
+}
+
+.game{
+    height: 40px;
+    background-color: #2C333C;
+    display: flex;
+    gap: 10px;
+    padding-top: 10px;
+    padding-left: 20px;
+}
+.time{
+    width: 100px;
+}
+.right-box{
+    height: 194px;
+    background-color: #2e3740;
+}
+.box-header{
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border-bottom: 1px solid #fd402f ;
+}
+.fa-trash-can{
+    color: #fd402f;
+}
+.reg-drop{
+    // width: 240px;
+    background-color: #2e3740;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+li{
+    color: white;
+    list-style-type: none;
+}
+.regions{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // width: 240px;
+    min-height: 40px;
+    background-color: #343F49;
+}
+.reg{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 20px;
+    padding-left: 15px;
+    min-height: 40px;
+
+}
+input:checked ~ .checkmark {
+    background-color: #FD3F2F;
+}
+.checkmark{
+    background-color: transparent;
+}
+
+
+
+
+
+
+
+
+
