@@ -17,21 +17,24 @@ export class HomeComponent {
   filteredGames: any[]=[];
   searchQuery: string = '';
   onSearch() {
-    this.filterTeams = this.teamsData.filter(team=>team.Name == this.searchQuery)
-    if(this.filterTeams.length > 0){
-      let team = this.filterTeams[0]
-      console.log(team)
-      let regions = this.sportData.find(item => item.ID == team.Sport).Regions
-      let allChamps = Object.values(regions).flatMap(
-        (region : any) => Object.values(region.Champs).map(
-          (champ : any) => champ.GameSmallItems
-        )
-      )
-      console.log(allChamps)
-      let unionGames = allChamps.flatMap((item: any) => Object.values(item))
-      this.filteredGames = unionGames.filter((champ : any) => champ.t1 == team.ID || champ.t2 == team.ID)
-      console.log(this.filteredGames)
+    if(this.searchQuery === ''){
+      this.filteredGames = []
+      return;
     }
+    this.filterTeams = this.teamsData.filter(team=>team.Name.toLowerCase().includes(this.searchQuery))
+    if(this.filterTeams.length == 0){
+      this.filteredGames = []
+      return
+    }
+    let team = this.filterTeams[0]
+    let regions = this.sportData.find(item => item.ID == team.Sport).Regions
+    let allChamps = Object.values(regions).flatMap(
+      (region : any) => Object.values(region.Champs).map(
+        (champ : any) => champ.GameSmallItems
+      )
+    )
+    let unionGames = allChamps.flatMap((item: any) => Object.values(item))
+    this.filteredGames = unionGames.filter((champ : any) => champ.t1 == team.ID || champ.t2 == team.ID)
   }
   isDropdownOpen = false;
   selectedOption: string = '';
@@ -41,33 +44,77 @@ export class HomeComponent {
   activeSportName = ''
   activeMatches : any[] = []
   activeChampsIndex = 0
+  months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  formatDate(datetime: string){
+    var d = new Date(datetime);
+    var day = this.days[d.getDay()];
+    var hr = d.getHours();
+    var min = d.getMinutes().toString();
+    if (parseInt(min) < 10) {
+        min = "0" + min;
+    }
+    var ampm = "am";
+    if( hr > 12 ) {
+        hr -= 12;
+        ampm = "pm";
+    }
+    var date = d.getDate();
+    var month = this.months[d.getMonth()];
+    var year = d.getFullYear();
+
+    return date + " " + month + " " + hr + ":" + min + ampm;
+  }
   getTeamById(id : number){
     return this.teamsData.find(t=>t.ID==id)
   }
-  setData(data:any) {
+  toggleRegion(region: any , index: number){
+    let isChecked = !region.checked;
+    region.checked = isChecked;
+    region.indeterminate = false ; 
+    this.activeChamps.forEach(champ => champ.checked = isChecked)
+  }
+  toggleChamp(region: any , champ : any){
+    champ.checked = !champ.checked;
+    let totalChamps = this.activeChamps.length;
+    let checkedChamps = this.activeChamps.filter(champ => champ.checked).length;
+    if(checkedChamps === totalChamps){
+      region.checked = true;
+      region.indeterminate = false;
+    } else if(checkedChamps > 0){
+      region.checked = false;
+      region.indeterminate = true;
+    } else{
+      region.checked = false ;
+      region.indeterminate = false;
+    }
+  }
+  selectDropdown : number | null = null;
+  setData(data:any, index : number) {
+    if(this.selectDropdown === index){
+      this.selectDropdown = null;
+    }else{
+      this.selectDropdown = index
+    }
     this.activeRegions = Object.values(data.Regions)
     this.activeSportName = data.KeyName;
     this.activeChamps = [];
     this.activeChampsIndex = 0;
     this.activeMatches = [];
   }
+  
   setChamps(data:any,i : number) {
     this.activeChamps = Object.values(data.Champs)
     this.activeChampsIndex = i
     this.isDropdownOpen = true
-    // console.log(this.activeChamps)
   }
   setMatches(matches:any){
+    
     this.activeMatches = [...this.activeMatches, ...Object.values(matches.GameSmallItems)]
-    // console.log(this.activeMatches)
   }
   clearMatches(){
     this.activeMatches = [];
   }
-  // toggleDropdown() {
-  //   this.isDropdownOpen = !this.isDropdownOpen;
-
-  // }
   selectOption(option: string) {
     this.selectedOption = option;
   }
@@ -78,9 +125,9 @@ export class HomeComponent {
         let parsedData = JSON.parse(data); 
         this.array = parsedData.EN.Sports;
         this.sportData = Object.keys(this.array).map((key)=>this.array[key])
-        console.log(this.sportData)
+        // console.log(this.sportData)
       } else {
-        console.log("Data is already an object:", data);
+        // console.log("Data is already an object:", data);
       }});
 
 
@@ -89,9 +136,9 @@ export class HomeComponent {
         let parsedData1 = JSON.parse(data);
         this.array2 = parsedData1;
         this.teamsData = Object.keys(this.array2).map((key)=>this.array2[key])
-        console.log(this.teamsData)
+        // console.log(this.teamsData)
       } else {
-        console.log("Data is already an object:", data);
+        // console.log("Data is already an object:", data);
       }});
   
   }
