@@ -42,7 +42,7 @@ export class HomeComponent {
   activeRegions : any[] = []
   activeChamps : any[] = []
   activeSportName = ''
-  activeMatches : any[] = []
+  activeMatches : any = []
   activeChampsIndex = 0
   months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -74,7 +74,7 @@ export class HomeComponent {
     region.indeterminate = false ; 
     this.activeChamps.forEach(champ => champ.checked = isChecked)
   }
-  toggleChamp(region: any , champ : any){
+  toggleChamp(region: any , champ : any, name: string, id: number){
     champ.checked = !champ.checked;
     let totalChamps = this.activeChamps.length;
     let checkedChamps = this.activeChamps.filter(champ => champ.checked).length;
@@ -88,8 +88,27 @@ export class HomeComponent {
       region.checked = false ;
       region.indeterminate = false;
     }
+    if(!champ.checked){
+      this.removeMatches(champ, id)
+    }else{
+      this.setMatches(champ, name, id)
+    }
   }
   selectDropdown : number | null = null;
+  selectedSports : any[] = [];
+  selectSport(data : any , index : number){
+    let selectedSport = {
+      sportName: data.keyName,
+      regions: Object.values(data.Regions),
+      champs : Object.values(data.Champs),
+      matches : []
+    };
+    this.selectedSports.unshift(selectedSport);
+    console.log(this.selectedSports)
+  }
+  setMatch(data: any, sportIndex: number){
+    this.selectedSports[sportIndex].matches = [...Object.values(data.GameSmallItems)];
+  }
   setData(data:any, index : number) {
     if(this.selectDropdown === index){
       this.selectDropdown = null;
@@ -100,21 +119,37 @@ export class HomeComponent {
     this.activeSportName = data.KeyName;
     this.activeChamps = [];
     this.activeChampsIndex = 0;
-    this.activeMatches = [];
   }
-  
   setChamps(data:any,i : number) {
     this.activeChamps = Object.values(data.Champs)
     this.activeChampsIndex = i
     this.isDropdownOpen = true
   }
-  setMatches(matches:any){
-    
-    this.activeMatches = [...this.activeMatches, ...Object.values(matches.GameSmallItems)]
+  setMatches(matches:any, name: string, id: number){
+    var sport = this.activeMatches.find((el:any) => el.id == id)
+    if (!sport) {
+      this.activeMatches.unshift({
+        id,
+        name,
+        matches: [...Object.values(matches.GameSmallItems)]
+      })
+      return;
+    }
+
+    sport.matches = Object.values(matches.GameSmallItems).concat(sport.matches)
   }
-  clearMatches(){
-    this.activeMatches = [];
+
+  removeMatches(champ: any, id: number) {
+    var sport = this.activeMatches.find((el:any) => el.id == id)
+  
+    Object.values(champ.GameSmallItems).forEach((game:any) => {
+      sport.matches.splice(sport.matches.indexOf(game), 1)
+    })
+    if(sport.matches.length == 0){
+     this.activeMatches = this.activeMatches.filter((el:any) => el.id !=sport.id)
+    }
   }
+
   selectOption(option: string) {
     this.selectedOption = option;
   }

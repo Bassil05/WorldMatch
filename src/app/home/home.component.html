@@ -18,21 +18,25 @@
                 </div>
                 <div class="main-drop">
                     <ul *ngIf="selectDropdown === i" class="reg-drop">
-                        <li *ngFor="let option of activeRegions;let i = index" (click)="setChamps(option,i)" class="regions">
+                        <li *ngFor="let option of activeRegions; let i = index" (click)="setChamps(option,i)" class="regions">
                             <div class="reg">
                                 <span [attr.country]='option.KeyName.toLowerCase()' class='flag'></span>
                                 {{ option.KeyName }}
                                 <input type="checkbox"
                                         [checked]="option.checked"
                                         [indeterminate]="option.indeterminate"
-                                        (change)="toggleRegion(option,i)">
+                                        (change)="toggleRegion(option, i)">
                            </div>
                             <ul *ngIf="isDropdownOpen && i==activeChampsIndex" class="dropdown">
-                                <li style="min-height: 40px; padding-left: 30px;" *ngFor="let champ of activeChamps" (click)="setMatches(champ)">
-                                    {{champ.KeyName}} 
+                                <!-- (click)="setMatches(champ, data.Name, data.ID)" -->
+                                <li style="min-height: 40px; padding-left: 30px;" *ngFor="let champ of activeChamps" >
+                                    <label [for]="champ.KeyName">
+                                        {{champ.KeyName}} 
+                                    </label>
                                     <input type="checkbox"
+                                    [id]="champ.KeyName"
                                             [checked]="champ.checked"
-                                            (change)="toggleChamp(option , champ)">
+                                            (change)="toggleChamp(option , champ, data.Name, data.ID)">
                                     
                                 </li>
                             </ul>
@@ -78,25 +82,27 @@
             </div>
             <p style="font-size: 16px;">+</p>
         </div>
-        <div class="sport-name">
-            <i [attr.sport]="activeSportName.toLowerCase()" class='sport-icon' style="color: white;"></i>
-            <p>{{activeSportName}}</p>
+        <div *ngFor="let data of activeMatches">
+            <div class="sport-name">
+                <i [attr.sport]="data.name.toLowerCase()" class='sport-icon' style="color: white;"></i>
+                <p>{{data.name}}</p>
+            </div>
+            <div class="games">
+                <div  *ngFor="let match of data.matches" class="game">
+                    <p class="time">{{formatDate(match.StartTime)}}</p>
+                    <p>
+                        {{getTeamById(match.t1)?.Name}}
+                        - {{getTeamById(match.t2)?.Name}}
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="games">
-            <div  *ngFor="let match of activeMatches" class="game">
-                <p class="time">{{formatDate(match.StartTime)}}</p>
+        <div *ngFor="let match of filteredGames" class="game">
+            <p class="time">{{formatDate(match.StartTime)}}</p>
                 <p>
                     {{getTeamById(match.t1)?.Name}}
                     - {{getTeamById(match.t2)?.Name}}
-                </p>
-            </div>
-            <div *ngFor="let match of filteredGames" class="game">
-                <p class="time">{{formatDate(match.StartTime)}}</p>
-                <p>
-                    {{getTeamById(match.t1)?.Name}}
-                    - {{getTeamById(match.t2)?.Name}}
-                </p>
-            </div>
+               </p>
         </div>
     </main>
     <div class="right-box col-3">
